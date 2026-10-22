@@ -135,6 +135,7 @@ pytest = "*"
 pytest-console-scripts = "*"
 pytest-cov = "*"
 ruff = "*"
+eigen = "*"
 
 [tool.pixi.target.linux-64.dependencies]
 pyre = "*"
