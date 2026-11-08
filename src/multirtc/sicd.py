@@ -39,7 +39,7 @@ class SicdSlc:
         self.local_epsg = define_geogrid.get_point_epsg(self.center.y, self.center.x)
         self.scp_hae = sicd.GeoData.SCP.LLH.HAE
         self.lookside = 'right' if sicd.SCPCOA.SideOfTrack == 'R' else 'left'
-        center_frequency = sicd.RadarCollection.TxFrequency.Min + sicd.RadarCollection.TxFrequency.Max / 2
+        center_frequency = (sicd.RadarCollection.TxFrequency.Min + sicd.RadarCollection.TxFrequency.Max) / 2
         self.wavelength = isce3.core.speed_of_light / center_frequency
         self.polarization = sicd.RadarCollection.RcvChannels[0].TxRcvPolarization.replace(':', '')
         self.shape = (sicd.ImageData.NumRows, sicd.ImageData.NumCols)
