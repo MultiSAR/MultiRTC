@@ -10,6 +10,7 @@ and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 * SICD center frequency (and so the wavelength) is now the mean of `TxFrequency.Min` and `TxFrequency.Max`; operator precedence gave `Min + Max / 2`.
+* `SicdRzdSlc` sensing start for RGZERO SICDs whose azimuth axis is time-reversed (as on left-looking Capella scenes). The last column time was taken at index `NumCols`, one past the image, which put `sensing_start` one line early; it is now taken at `NumCols - 1` and the PRF is computed over `NumCols - 1` intervals.
 
 ## [0.5.4]
 
