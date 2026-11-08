@@ -170,7 +170,7 @@ class SicdRzdSlc(Slc, SicdSlc):
         self.az_reversed = last_col_time < first_col_time
         self.sensing_start = min(first_col_time, last_col_time)
         self.sensing_end = max(first_col_time, last_col_time)
-        self.starting_range = self.get_starting_range(0)
+        self.starting_range = self.source.RMA.INCA.R_CA_SCP - self.shift[0] * self.spacing[0]
         self.az_reversed = last_col_time < first_col_time
         self.prf = (self.shape[1] - 1) / (self.sensing_end - self.sensing_start)
         self.orbit = self.get_orbit()
