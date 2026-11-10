@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [PEP 440](https://www.python.org/dev/peps/pep-0440/)
 and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.5]
+
+### Fixed
+* SICD center frequency (and so the wavelength) is now the mean of `TxFrequency.Min` and `TxFrequency.Max`; operator precedence gave `Min + Max / 2`.
+* `SicdRzdSlc` sensing start for RGZERO SICDs whose azimuth axis is time-reversed (as on left-looking Capella scenes). The last column time was taken at index `NumCols`, one past the image, which put `sensing_start` one line early; it is now taken at `NumCols - 1` and the PRF is computed over `NumCols - 1` intervals.
+* `SicdRzdSlc` starting range is now the RGZERO row-0 range `R_CA_SCP - (SCPPixel.Row - FirstRow) * Row.SS`. `get_starting_range(0)` measured to a point on the plane tangent at the SCP, which matches only at the SCP column (-6.3 m at column 0 on a Capella stripmap scene), and that value was applied to the whole grid.
+
 ## [0.5.4]
 
 ### Fixed

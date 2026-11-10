@@ -39,7 +39,7 @@ class SicdSlc:
         self.local_epsg = define_geogrid.get_point_epsg(self.center.y, self.center.x)
         self.scp_hae = sicd.GeoData.SCP.LLH.HAE
         self.lookside = 'right' if sicd.SCPCOA.SideOfTrack == 'R' else 'left'
-        center_frequency = sicd.RadarCollection.TxFrequency.Min + sicd.RadarCollection.TxFrequency.Max / 2
+        center_frequency = (sicd.RadarCollection.TxFrequency.Min + sicd.RadarCollection.TxFrequency.Max) / 2
         self.wavelength = isce3.core.speed_of_light / center_frequency
         self.polarization = sicd.RadarCollection.RcvChannels[0].TxRcvPolarization.replace(':', '')
         self.shape = (sicd.ImageData.NumRows, sicd.ImageData.NumCols)
@@ -166,13 +166,13 @@ class SicdRzdSlc(Slc, SicdSlc):
         super().__init__(sicd_path)
         assert self.source.Grid.Type == 'RGZERO', 'Only range zero doppler grids are supported for by this class'
         first_col_time = self.source.RMA.INCA.TimeCAPoly(-self.shift[1] * self.spacing[1])
-        last_col_time = self.source.RMA.INCA.TimeCAPoly((self.shape[1] - self.shift[1]) * self.spacing[1])
+        last_col_time = self.source.RMA.INCA.TimeCAPoly((self.shape[1] - 1 - self.shift[1]) * self.spacing[1])
         self.az_reversed = last_col_time < first_col_time
         self.sensing_start = min(first_col_time, last_col_time)
         self.sensing_end = max(first_col_time, last_col_time)
-        self.starting_range = self.get_starting_range(0)
+        self.starting_range = self.source.RMA.INCA.R_CA_SCP - self.shift[0] * self.spacing[0]
         self.az_reversed = last_col_time < first_col_time
-        self.prf = self.shape[1] / (self.sensing_end - self.sensing_start)
+        self.prf = (self.shape[1] - 1) / (self.sensing_end - self.sensing_start)
         self.orbit = self.get_orbit()
         self.radar_grid = self.get_radar_grid()
         self.doppler_centroid_grid = isce3.core.LUT2d()
